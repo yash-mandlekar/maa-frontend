@@ -1,16 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Card } from "@/components/ui/Card";
+import { Spinner } from "@/components/ui/Spinner";
 import { useCreateStudent } from "@/hooks/api/useStudents";
 import { useCourses } from "@/hooks/api/useCourses";
 import { useUniversities } from "@/hooks/api/useUniversities";
 import { GraduationCap, Save, X } from "lucide-react";
 import { toast } from "sonner";
 
-export default function NewStudentPage() {
+function NewStudentPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const createStudent = useCreateStudent();
@@ -795,5 +796,21 @@ export default function NewStudentPage() {
         </form>
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function NewStudentPage() {
+  return (
+    <Suspense
+      fallback={
+        <DashboardLayout>
+          <div className="flex items-center justify-center h-full">
+            <Spinner size="lg" />
+          </div>
+        </DashboardLayout>
+      }
+    >
+      <NewStudentPageContent />
+    </Suspense>
   );
 }

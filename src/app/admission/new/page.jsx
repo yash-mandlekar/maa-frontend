@@ -443,3 +443,19 @@ function AdmissionPageContent() {
     </DashboardLayout>
   );
 }
+
+export default function AdmissionPage() {
+  return (
+    <Suspense
+      fallback={
+        <DashboardLayout>
+          <div className="flex items-center justify-center h-full">
+            <Spinner size="lg" />
+          </div>
+        </DashboardLayout>
+      }
+    >
+      <AdmissionPageContent />
+    </Suspense>
+  );
+}
