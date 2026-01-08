@@ -90,9 +90,9 @@ export default function DashboardPage() {
         {/* Students and Courses */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <StatsCard
-            title="Students"
+            title="Diploma"
             value={totalStudents || 0}
-            subtitle="Total Students"
+            subtitle="Total Diploma Students"
             icon={Users}
             color="cyan"
           />

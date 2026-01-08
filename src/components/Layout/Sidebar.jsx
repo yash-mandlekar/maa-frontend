@@ -18,7 +18,7 @@ import { useOverdueStudents } from "@/hooks/api/useFees";
 const menuItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Inquiries", href: "/inquiries", icon: MessageSquare },
-  { name: "Students", href: "/students", icon: Users },
+  { name: "Diploma", href: "/students", icon: Users },
   { name: "Admissions", href: "/admission", icon: GraduationCap },
   { name: "Fees", href: "/fees", icon: IndianRupee, showBadge: true },
   { name: "Courses", href: "/courses", icon: BookOpen },

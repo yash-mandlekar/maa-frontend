@@ -46,7 +46,7 @@ export default function StudentDetailPage({ params }) {
     );
   }
 
-  const studentData = student.data;
+  const studentData = student;
 
   return (
     <DashboardLayout>
@@ -309,9 +309,9 @@ export default function StudentDetailPage({ params }) {
                 <p className="font-medium text-gray-900 dark:text-gray-100">
                   {studentData.createdAt
                     ? format(
-                        new Date(studentData.createdAt),
-                        "dd MMM yyyy, hh:mm a"
-                      )
+                      new Date(studentData.createdAt),
+                      "dd MMM yyyy, hh:mm a"
+                    )
                     : "N/A"}
                 </p>
               </div>

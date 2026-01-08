@@ -138,10 +138,12 @@ export default function FeesPage() {
           <div className="border-b pb-3 mb-4">
             <h2 className="text-xl font-bold text-red-600 flex items-center gap-2">
               <span>⚠️</span>
-              Students with Overdue Fees
+              {overdueData?.data?.length === 1 ? "Student" : "Students"} with
+              Overdue Fees
             </h2>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              Students whose fee due date has passed
+              {overdueData?.data?.length === 1 ? "Student" : "Students"} whose
+              fee due date has passed
             </p>
           </div>
           {overdueLoading ? (
