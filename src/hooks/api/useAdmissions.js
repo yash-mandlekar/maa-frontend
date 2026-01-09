@@ -51,8 +51,9 @@ export function useUpdateAdmission() {
       const { data } = await api.put(`/admissions/${id}`, admissionData);
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["admissions"] });
+      queryClient.invalidateQueries({ queryKey: ["admission", variables.id] });
     },
   });
 }

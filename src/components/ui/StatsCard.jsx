@@ -12,32 +12,32 @@ export function StatsCard({
     blue: {
       border: "border-blue-200",
       text: "text-blue-600",
-      bg: "bg-blue-50",
+      bg: "",
     },
     green: {
       border: "border-green-200",
       text: "text-green-600",
-      bg: "bg-green-50",
+      bg: "",
     },
     yellow: {
       border: "border-yellow-200",
       text: "text-yellow-600",
-      bg: "bg-yellow-50",
+      bg: "",
     },
     purple: {
       border: "border-purple-200",
       text: "text-purple-600",
-      bg: "bg-purple-50",
+      bg: "",
     },
     cyan: {
       border: "border-cyan-200",
       text: "text-cyan-600",
-      bg: "bg-cyan-50",
+      bg: "",
     },
     red: {
       border: "border-red-200",
       text: "text-red-600",
-      bg: "bg-red-50",
+      bg: "",
     },
   };
 

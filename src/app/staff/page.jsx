@@ -246,9 +246,7 @@ export default function StaffPage() {
                           <Eye className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() =>
-                            router.push(`/staff/${member._id}/edit`)
-                          }
+                          onClick={() => router.push(`/staff/${member._id}`)}
                           className="p-1 text-green-600 hover:bg-green-50 rounded"
                           title="Edit"
                         >

@@ -44,8 +44,9 @@ export function useUpdateStudent() {
       const response = await api.put(`/students/${id}`, data);
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["students"] });
+      queryClient.invalidateQueries({ queryKey: ["student", variables.id] });
     },
   });
 }

@@ -151,7 +151,7 @@ export default function DashboardPage() {
                         <span>{fee.student?.firstName}</span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-gray-600">
+                    <TableCell className="text-gray-600 dark:text-gray-400">
                       {fee.student?.contactNumber}
                     </TableCell>
                     <TableCell>
@@ -159,7 +159,7 @@ export default function DashboardPage() {
                         {fee.registrationPaymentMode}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-gray-600">
+                    <TableCell className="text-gray-600 dark:text-gray-400">
                       {format(new Date(fee.payDate), "dd MMM yyyy")}
                     </TableCell>
                     <TableCell className="text-right">
@@ -182,7 +182,7 @@ export default function DashboardPage() {
             </TableBody>
           </Table>
           {recentTransactions && recentTransactions.length > 0 && (
-            <div className="mt-4 flex justify-between items-center text-sm text-gray-600">
+            <div className="mt-4 flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
               <span>
                 Showing recent {Math.min(5, recentTransactions.length)}{" "}
                 transactions

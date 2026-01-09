@@ -125,14 +125,14 @@ export default function UniversitiesPage() {
         </div>
 
         {/* Info Card */}
-        <Card className="border-primary-200 bg-primary-50">
+        <Card className="border-primary-200 bg-primary-50 dark:bg-primary-900/20 dark:border-primary-800">
           <div className="flex items-start gap-3">
-            <Building2 className="w-5 h-5 text-primary-600 mt-1" />
+            <Building2 className="w-5 h-5 text-primary-600 dark:text-primary-400 mt-1" />
             <div>
-              <h3 className="font-semibold text-primary-900 mb-1">
+              <h3 className="font-semibold text-primary-900 dark:text-primary-100 mb-1">
                 About Universities
               </h3>
-              <p className="text-sm text-primary-700">
+              <p className="text-sm text-primary-700 dark:text-primary-300">
                 Manage the list of universities and institutions that your
                 courses are affiliated with. This information is used for
                 student certifications and course accreditation.
@@ -148,7 +148,7 @@ export default function UniversitiesPage() {
             <input
               type="text"
               placeholder="Search universities by name or location..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -161,7 +161,9 @@ export default function UniversitiesPage() {
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Building2 className="w-5 h-5 text-primary-600" />
-                <p className="text-sm text-gray-600">Total Universities</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Total Universities
+                </p>
               </div>
               <p className="text-2xl font-bold text-primary-600">
                 {universities?.length || 0}
@@ -172,7 +174,9 @@ export default function UniversitiesPage() {
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <MapPin className="w-5 h-5 text-blue-600" />
-                <p className="text-sm text-gray-600">Unique Locations</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Unique Locations
+                </p>
               </div>
               <p className="text-2xl font-bold text-blue-600">
                 {universities
@@ -189,7 +193,9 @@ export default function UniversitiesPage() {
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Building2 className="w-5 h-5 text-primary-600" />
-                <p className="text-sm text-gray-600">Recently Added</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Recently Added
+                </p>
               </div>
               <p className="text-2xl font-bold text-primary-600">
                 {universities?.slice(-7).length || 0}
@@ -213,11 +219,11 @@ export default function UniversitiesPage() {
                       <Building2 className="w-6 h-6" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-lg text-gray-900 truncate">
+                      <h3 className="font-semibold text-lg text-gray-900 dark:text-white truncate">
                         {university.name}
                       </h3>
                       {university.location && (
-                        <p className="text-sm text-gray-600 flex items-center gap-1 mt-1">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1 mt-1">
                           <MapPin className="w-3 h-3" />
                           {university.location}
                         </p>
@@ -226,7 +232,7 @@ export default function UniversitiesPage() {
                   </div>
 
                   {/* Metadata */}
-                  <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t">
+                  <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 pt-2 border-t dark:border-gray-700">
                     <span>
                       Added:{" "}
                       {university.createdAt
@@ -241,7 +247,7 @@ export default function UniversitiesPage() {
                       onClick={() =>
                         router.push(`/universities/${university._id}`)
                       }
-                      className="flex-1 px-3 py-2 text-sm bg-primary-50 text-primary-600 rounded-lg hover:bg-primary-100 transition-colors flex items-center justify-center gap-1"
+                      className="flex-1 px-3 py-2 text-sm bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors flex items-center justify-center gap-1"
                     >
                       <Edit className="w-4 h-4" />
                       Edit
@@ -249,7 +255,7 @@ export default function UniversitiesPage() {
                     <button
                       onClick={() => handleDelete(university._id)}
                       disabled={deleteUniversity.isPending}
-                      className="px-3 py-2 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center gap-1"
+                      className="px-3 py-2 text-sm bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors flex items-center justify-center gap-1"
                     >
                       <Trash2 className="w-4 h-4" />
                       Delete
@@ -261,8 +267,8 @@ export default function UniversitiesPage() {
           ) : (
             <div className="col-span-full">
               <Card>
-                <div className="text-center py-12 text-gray-500">
-                  <Building2 className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                  <Building2 className="w-12 h-12 mx-auto mb-3 text-gray-400 dark:text-gray-500" />
                   <p className="text-lg font-medium">No universities found</p>
                   <p className="text-sm mt-1">
                     Add your first university to get started
@@ -283,15 +289,15 @@ export default function UniversitiesPage() {
         {/* Add University Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg max-w-md w-full">
-              <div className="border-b border-gray-200 p-6 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+            <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full">
+              <div className="border-b border-gray-200 dark:border-gray-700 p-6 flex items-center justify-between">
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
                   <Building2 className="w-5 h-5 text-primary" />
                   Add New University
                 </h2>
                 <button
                   onClick={() => setIsModalOpen(false)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -299,7 +305,7 @@ export default function UniversitiesPage() {
               <form onSubmit={handleCreateUniversity} className="p-6">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       University Name <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -308,12 +314,12 @@ export default function UniversitiesPage() {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       placeholder="e.g., University of Delhi"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Location
                     </label>
                     <div className="relative">
@@ -323,7 +329,7 @@ export default function UniversitiesPage() {
                         name="location"
                         value={formData.location}
                         onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                         placeholder="e.g., New Delhi, India"
                       />
                     </div>
@@ -333,7 +339,7 @@ export default function UniversitiesPage() {
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                    className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     Cancel
                   </button>

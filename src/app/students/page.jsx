@@ -155,7 +155,7 @@ export default function StudentsPage() {
               {/* Pagination */}
               {data?.pagination && (
                 <div className="mt-4 flex justify-between items-center">
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
                     Showing {data.data.length} of {data.pagination.totalItems}{" "}
                     students
                   </span>

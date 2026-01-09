@@ -259,50 +259,53 @@ export default function FeesPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50">
+                <thead className="bg-gray-50 dark:bg-gray-800">
                   <tr>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                       S.No.
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                       Student
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                       Fee Type
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                       Payment Mode
                     </th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                       Date
                     </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">
                       Amount
                     </th>
-                    <th className="px-4 py-3 text-center text-sm font-semibold text-gray-700">
+                    <th className="px-4 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {data?.data && data.data.length > 0 ? (
                     data.data.map((fee, index) => (
-                      <tr key={fee._id} className="hover:bg-gray-50">
+                      <tr
+                        key={fee._id}
+                        className="hover:bg-gray-50 dark:hover:bg-gray-800"
+                      >
                         <td className="px-4 py-3 text-sm">{index + 1}</td>
                         <td className="px-4 py-3 text-sm">
                           {fee.student?.firstName} {fee.student?.lastName}
                         </td>
                         <td className="px-4 py-3 text-sm">{fee.feeType}</td>
                         <td className="px-4 py-3 text-sm">
-                          <span className="px-2 py-1 bg-gray-200 rounded text-xs">
+                          <span className="px-2 py-1 bg-gray-200 dark:bg-gray-700 dark:text-gray-300 rounded text-xs">
                             {fee.registrationPaymentMode}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-600">
+                        <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                           {format(new Date(fee.payDate), "dd MMM yyyy")}
                         </td>
                         <td className="px-4 py-3 text-sm text-right">
-                          <span className="px-2 py-1 bg-green-100 text-green-700 rounded font-semibold">
+                          <span className="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded font-semibold">
                             ₹{fee.payment}
                           </span>
                         </td>
@@ -332,7 +335,7 @@ export default function FeesPage() {
                     <tr>
                       <td
                         colSpan="7"
-                        className="px-4 py-8 text-center text-gray-500"
+                        className="px-4 py-8 text-center text-gray-500 dark:text-gray-400"
                       >
                         No fee records found
                       </td>

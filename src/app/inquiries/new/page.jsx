@@ -93,7 +93,7 @@ export default function NewInquiryPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Inquiry Type Radio Buttons */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                 Inquiry Type <span className="text-red-500">*</span>
               </label>
               <div className="flex gap-6">
@@ -106,7 +106,9 @@ export default function NewInquiryPage() {
                     onChange={handleChange}
                     className="w-4 h-4 text-primary focus:ring-primary"
                   />
-                  <span className="text-gray-700">Diploma</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Diploma
+                  </span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -117,7 +119,9 @@ export default function NewInquiryPage() {
                     onChange={handleChange}
                     className="w-4 h-4 text-primary focus:ring-primary"
                   />
-                  <span className="text-gray-700">Admission</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Admission
+                  </span>
                 </label>
               </div>
             </div>
@@ -125,7 +129,7 @@ export default function NewInquiryPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Student Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Student Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -135,13 +139,13 @@ export default function NewInquiryPage() {
                   onChange={handleChange}
                   required
                   placeholder="Enter First Name"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
 
               {/* Student Surname */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Student Surname <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -151,13 +155,13 @@ export default function NewInquiryPage() {
                   onChange={handleChange}
                   required
                   placeholder="Enter Last Name"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
 
               {/* Email */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Student Email <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -167,13 +171,13 @@ export default function NewInquiryPage() {
                   onChange={handleChange}
                   required
                   placeholder="Enter Email Address"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
 
               {/* Father/Husband Name */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Name of Father / Husband{" "}
                   <span className="text-red-500">*</span>
                 </label>
@@ -184,13 +188,13 @@ export default function NewInquiryPage() {
                   onChange={handleChange}
                   required
                   placeholder="Enter Name Of Father / Husband"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
 
               {/* Contact Number */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Contact Number / WhatsApp Number{" "}
                   <span className="text-red-500">*</span>
                 </label>
@@ -201,13 +205,13 @@ export default function NewInquiryPage() {
                   onChange={handleChange}
                   required
                   placeholder="Enter Contact Number"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
 
               {/* Course Selection */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Select Course <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -215,7 +219,7 @@ export default function NewInquiryPage() {
                   value={formData.courseId}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
                   <option value="">Choose a course...</option>
                   {availableCourses?.map((course) => (
@@ -224,7 +228,7 @@ export default function NewInquiryPage() {
                     </option>
                   ))}
                 </select>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   {formData.inquiryType === "admission"
                     ? "Showing short-term courses for admission"
                     : "Showing diploma courses"}
@@ -233,7 +237,7 @@ export default function NewInquiryPage() {
 
               {/* Qualification */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Qualification <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -243,13 +247,13 @@ export default function NewInquiryPage() {
                   onChange={handleChange}
                   required
                   placeholder="Enter Qualification"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
 
               {/* Address */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Permanent Address <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -259,17 +263,17 @@ export default function NewInquiryPage() {
                   onChange={handleChange}
                   required
                   placeholder="Address"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end gap-4 pt-4 border-t">
+            <div className="flex justify-end gap-4 pt-4 border-t dark:border-gray-700">
               <button
                 type="button"
                 onClick={() => router.push("/inquiries")}
-                className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                className="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
               >
                 <X className="w-4 h-4" />
                 Cancel

@@ -44,8 +44,9 @@ export function useUpdateStaff() {
       const response = await api.put(`/staff/${id}`, staffData);
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["staff"] });
+      queryClient.invalidateQueries({ queryKey: ["staff", variables.id] });
     },
   });
 }

@@ -94,14 +94,14 @@ export default function ShortTermCoursesPage() {
         </div>
 
         {/* Info Card */}
-        <Card className="border-primary-200 bg-primary-50">
+        <Card className="border-primary-200 bg-primary-50 dark:bg-primary-900/20 dark:border-primary-800">
           <div className="flex items-start gap-3">
-            <Zap className="w-5 h-5 text-primary-600 mt-1" />
+            <Zap className="w-5 h-5 text-primary-600 dark:text-primary-400 mt-1" />
             <div>
-              <h3 className="font-semibold text-primary-900 mb-1">
+              <h3 className="font-semibold text-primary-900 dark:text-primary-100 mb-1">
                 About Short-Term Courses
               </h3>
-              <p className="text-sm text-primary-700">
+              <p className="text-sm text-primary-700 dark:text-primary-300">
                 Short-term courses are intensive programs designed for quick
                 skill development. These courses typically range from a few
                 weeks to a few months and focus on specific skills or
@@ -118,7 +118,7 @@ export default function ShortTermCoursesPage() {
             <input
               type="text"
               placeholder="Search short-term courses..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -131,7 +131,9 @@ export default function ShortTermCoursesPage() {
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <BookOpen className="w-5 h-5 text-primary-600" />
-                <p className="text-sm text-gray-600">Total Short Courses</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Total Short Courses
+                </p>
               </div>
               <p className="text-2xl font-bold text-primary-600">
                 {courses?.length || 0}
@@ -142,7 +144,9 @@ export default function ShortTermCoursesPage() {
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Clock className="w-5 h-5 text-blue-600" />
-                <p className="text-sm text-gray-600">Avg. Duration</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Avg. Duration
+                </p>
               </div>
               <p className="text-2xl font-bold text-blue-600">
                 {courses?.length > 0
@@ -161,7 +165,9 @@ export default function ShortTermCoursesPage() {
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <IndianRupee className="w-5 h-5 text-green-600" />
-                <p className="text-sm text-gray-600">Avg. Fee</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Avg. Fee
+                </p>
               </div>
               <p className="text-2xl font-bold text-green-600">
                 ₹
@@ -196,7 +202,7 @@ export default function ShortTermCoursesPage() {
                           {course.courseName}
                         </h3>
                         {course.courseCode && (
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
                             {course.courseCode}
                           </p>
                         )}
@@ -207,7 +213,7 @@ export default function ShortTermCoursesPage() {
                   {/* Course Details */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600 flex items-center gap-1">
+                      <span className="text-gray-600 dark:text-gray-400 flex items-center gap-1">
                         <Clock className="w-4 h-4" />
                         Duration
                       </span>
@@ -216,7 +222,7 @@ export default function ShortTermCoursesPage() {
                       </Badge>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600 flex items-center gap-1">
+                      <span className="text-gray-600 dark:text-gray-400 flex items-center gap-1">
                         <IndianRupee className="w-4 h-4" />
                         Fee
                       </span>
@@ -228,18 +234,18 @@ export default function ShortTermCoursesPage() {
 
                   {/* Description */}
                   {course.courseDescription && (
-                    <p className="text-sm text-gray-600 line-clamp-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                       {course.courseDescription}
                     </p>
                   )}
 
                   {/* Actions */}
-                  <div className="flex gap-2 pt-2 border-t">
+                  <div className="flex gap-2 pt-2 border-t dark:border-gray-700">
                     <button
                       onClick={() =>
                         router.push(`/short-courses/${course._id}`)
                       }
-                      className="flex-1 px-3 py-2 text-sm bg-primary-50 text-primary-600 rounded-lg hover:bg-primary-100 transition-colors flex items-center justify-center gap-1"
+                      className="flex-1 px-3 py-2 text-sm bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors flex items-center justify-center gap-1"
                     >
                       <Edit className="w-4 h-4" />
                       Edit
@@ -247,7 +253,7 @@ export default function ShortTermCoursesPage() {
                     <button
                       onClick={() => handleDelete(course._id)}
                       disabled={deleteCourse.isPending}
-                      className="px-3 py-2 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center gap-1"
+                      className="px-3 py-2 text-sm bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors flex items-center justify-center gap-1"
                     >
                       <Trash2 className="w-4 h-4" />
                       Delete
@@ -259,8 +265,8 @@ export default function ShortTermCoursesPage() {
           ) : (
             <div className="col-span-full">
               <Card>
-                <div className="text-center py-12 text-gray-500">
-                  <Zap className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                  <Zap className="w-12 h-12 mx-auto mb-3 text-gray-400 dark:text-gray-500" />
                   <p className="text-lg font-medium">
                     No short-term courses found
                   </p>
