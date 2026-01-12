@@ -239,18 +239,23 @@ export default function InquiriesPage() {
     <DashboardLayout>
       <div className="space-y-6">
         {/* Page Header */}
-        <div className="bg-primary rounded-lg p-6 text-white dark:bg-primary-600">
-          <div className="flex items-center justify-between">
+        <div className="bg-primary rounded-lg p-4 sm:p-6 text-white dark:bg-primary-600">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold">Inquiries Management</h1>
-              <p className="text-primary-100">MAA Computers &gt; Inquiries</p>
+              <h1 className="text-xl sm:text-2xl font-bold">
+                Inquiries Management
+              </h1>
+              <p className="text-primary-100 text-sm sm:text-base">
+                MAA Computers &gt; Inquiries
+              </p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-2 sm:gap-3">
               {/* Download Dropdown */}
               <div className="relative group">
-                <button className="bg-white text-primary px-4 py-2 rounded-lg font-semibold hover:bg-primary-50 transition-colors flex items-center gap-2">
-                  <Download className="w-5 h-5" />
-                  Download XLSX
+                <button className="bg-white text-primary px-3 sm:px-4 py-2 rounded-lg font-semibold hover:bg-primary-50 transition-colors flex items-center gap-2 text-sm sm:text-base">
+                  <Download className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="hidden sm:inline">Download XLSX</span>
+                  <span className="sm:hidden">XLSX</span>
                 </button>
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
                   <div className="py-2">
@@ -283,10 +288,11 @@ export default function InquiriesPage() {
               </div>
               <button
                 onClick={() => router.push("/inquiries/new")}
-                className="bg-white text-primary px-4 py-2 rounded-lg font-semibold hover:bg-primary-50 transition-colors flex items-center gap-2"
+                className="bg-white text-primary px-3 sm:px-4 py-2 rounded-lg font-semibold hover:bg-primary-50 transition-colors flex items-center gap-2 text-sm sm:text-base"
               >
-                <Plus className="w-5 h-5" />
-                Add New Enquiry
+                <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline">Add New Enquiry</span>
+                <span className="sm:hidden">New</span>
               </button>
             </div>
           </div>
@@ -328,7 +334,7 @@ export default function InquiriesPage() {
         </Card>
 
         {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           <Card className="border-primary-200 dark:border-primary-800">
             <div className="flex items-center justify-between">
               <div>

@@ -98,9 +98,11 @@ export default function FeesPage() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div className="bg-primary rounded-lg p-6 text-white">
-          <h1 className="text-2xl font-bold">Fee Management</h1>
-          <p className="text-primary-100">MAA Computers &gt; Fees</p>
+        <div className="bg-primary rounded-lg p-4 sm:p-6 text-white">
+          <h1 className="text-xl sm:text-2xl font-bold">Fee Management</h1>
+          <p className="text-primary-100 text-sm sm:text-base">
+            MAA Computers &gt; Fees
+          </p>
         </div>
 
         <Card>
@@ -136,14 +138,18 @@ export default function FeesPage() {
         {/* Overdue Students Section */}
         <Card>
           <div className="border-b pb-3 mb-4">
-            <h2 className="text-xl font-bold text-red-600 flex items-center gap-2">
+            <h2 className="text-lg sm:text-xl font-bold text-red-600 flex items-center gap-2">
               <span>⚠️</span>
-              {overdueData?.data?.length === 1 ? "Student" : "Students"} with
-              Overdue Fees
+              <span className="hidden sm:inline">
+                {overdueData?.data?.length === 1 ? "Student" : "Students"} with
+                Overdue Fees
+              </span>
+              <span className="sm:hidden">Overdue Fees</span>
             </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              {overdueData?.data?.length === 1 ? "Student" : "Students"} whose
-              fee due date has passed
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
+              {overdueData?.data?.length || 0}{" "}
+              {overdueData?.data?.length === 1 ? "student" : "students"} with
+              pending dues
             </p>
           </div>
           {overdueLoading ? (
@@ -199,7 +205,7 @@ export default function FeesPage() {
                           </span>
                         </td>
                         <td className="px-4 py-3 text-sm">
-                          {student.course?.courseName ||
+                          {student.course?.courseCode || student.course?.courseName ||
                             student.course?.shortCourseName ||
                             "N/A"}
                         </td>
@@ -268,6 +274,9 @@ export default function FeesPage() {
                       Student
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      Type
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                       Fee Type
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
@@ -294,6 +303,11 @@ export default function FeesPage() {
                         <td className="px-4 py-3 text-sm">{index + 1}</td>
                         <td className="px-4 py-3 text-sm">
                           {fee.student?.firstName} {fee.student?.lastName}
+                        </td>
+                        <td className="px-4 py-3 text-sm">
+                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded text-xs">
+                            {fee.studentModelType}
+                          </span>
                         </td>
                         <td className="px-4 py-3 text-sm">{fee.feeType}</td>
                         <td className="px-4 py-3 text-sm">
@@ -334,7 +348,7 @@ export default function FeesPage() {
                   ) : (
                     <tr>
                       <td
-                        colSpan="7"
+                        colSpan="8"
                         className="px-4 py-8 text-center text-gray-500 dark:text-gray-400"
                       >
                         No fee records found

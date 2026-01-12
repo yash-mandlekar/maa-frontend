@@ -16,6 +16,7 @@ import {
 import {
   useUniversities,
   useCreateUniversity,
+  useUpdateUniversity,
   useDeleteUniversity,
 } from "@/hooks/api/useUniversities";
 import {
@@ -29,12 +30,12 @@ import {
   Save,
 } from "lucide-react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 export default function UniversitiesPage() {
-  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     location: "",
@@ -42,6 +43,7 @@ export default function UniversitiesPage() {
 
   const { data: universities, isLoading, error } = useUniversities();
   const createUniversity = useCreateUniversity();
+  const updateUniversity = useUpdateUniversity();
   const deleteUniversity = useDeleteUniversity();
 
   const handleDelete = async (id) => {
@@ -55,15 +57,46 @@ export default function UniversitiesPage() {
     }
   };
 
-  const handleCreateUniversity = async (e) => {
+  const handleOpenEditModal = (university) => {
+    setFormData({
+      name: university.name || "",
+      location: university.location || "",
+    });
+    setEditingId(university._id);
+    setIsEditMode(true);
+    setIsModalOpen(true);
+  };
+
+  const handleOpenCreateModal = () => {
+    setFormData({ name: "", location: "" });
+    setEditingId(null);
+    setIsEditMode(false);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setIsEditMode(false);
+    setEditingId(null);
+    setFormData({ name: "", location: "" });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createUniversity.mutateAsync(formData);
-      toast.success("University added successfully");
-      setIsModalOpen(false);
-      setFormData({ name: "", location: "" });
+      if (isEditMode && editingId) {
+        await updateUniversity.mutateAsync({ id: editingId, ...formData });
+        toast.success("University updated successfully");
+      } else {
+        await createUniversity.mutateAsync(formData);
+        toast.success("University added successfully");
+      }
+      handleCloseModal();
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to add university");
+      toast.error(
+        error.response?.data?.message ||
+          `Failed to ${isEditMode ? "update" : "add"} university`
+      );
     }
   };
 
@@ -99,26 +132,28 @@ export default function UniversitiesPage() {
     );
   });
 
+  const isPending = createUniversity.isPending || updateUniversity.isPending;
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
         {/* Page Header */}
-        <div className="bg-primary rounded-lg p-6 text-white">
-          <div className="flex items-center justify-between">
+        <div className="bg-primary rounded-lg p-4 sm:p-6 text-white">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold flex items-center gap-2">
-                <Building2 className="w-6 h-6" />
+              <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+                <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
                 Universities & Institutions
               </h1>
-              <p className="text-primary-100">
+              <p className="text-primary-100 text-sm sm:text-base">
                 MAA Computers &gt; Universities
               </p>
             </div>
             <button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-white text-primary px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex items-center gap-2"
+              onClick={handleOpenCreateModal}
+              className="bg-white text-primary px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm sm:text-base"
             >
-              <Plus className="w-5 h-5" />
+              <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
               Add University
             </button>
           </div>
@@ -156,16 +191,16 @@ export default function UniversitiesPage() {
         </Card>
 
         {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
           <Card className="border-primary-200">
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Building2 className="w-5 h-5 text-primary-600" />
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                   Total Universities
                 </p>
               </div>
-              <p className="text-2xl font-bold text-primary-600">
+              <p className="text-xl sm:text-2xl font-bold text-primary-600">
                 {universities?.length || 0}
               </p>
             </div>
@@ -174,11 +209,11 @@ export default function UniversitiesPage() {
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <MapPin className="w-5 h-5 text-blue-600" />
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                   Unique Locations
                 </p>
               </div>
-              <p className="text-2xl font-bold text-blue-600">
+              <p className="text-xl sm:text-2xl font-bold text-blue-600">
                 {universities
                   ? new Set(
                       universities
@@ -189,15 +224,15 @@ export default function UniversitiesPage() {
               </p>
             </div>
           </Card>
-          <Card className="border-primary-200">
+          <Card className="border-primary-200 col-span-2 md:col-span-1">
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Building2 className="w-5 h-5 text-primary-600" />
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                   Recently Added
                 </p>
               </div>
-              <p className="text-2xl font-bold text-primary-600">
+              <p className="text-xl sm:text-2xl font-bold text-primary-600">
                 {universities?.slice(-7).length || 0}
               </p>
             </div>
@@ -205,7 +240,7 @@ export default function UniversitiesPage() {
         </div>
 
         {/* Universities Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredUniversities && filteredUniversities.length > 0 ? (
             filteredUniversities.map((university) => (
               <Card
@@ -215,15 +250,15 @@ export default function UniversitiesPage() {
                 <div className="space-y-4">
                   {/* University Header */}
                   <div className="flex items-start gap-3">
-                    <div className="w-12 h-12 rounded-lg bg-primary text-white flex items-center justify-center flex-shrink-0">
-                      <Building2 className="w-6 h-6" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-primary text-white flex items-center justify-center flex-shrink-0">
+                      <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-lg text-gray-900 dark:text-white truncate">
+                      <h3 className="font-semibold text-base sm:text-lg text-gray-900 dark:text-white truncate">
                         {university.name}
                       </h3>
                       {university.location && (
-                        <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1 mt-1">
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1 mt-1">
                           <MapPin className="w-3 h-3" />
                           {university.location}
                         </p>
@@ -244,9 +279,7 @@ export default function UniversitiesPage() {
                   {/* Actions */}
                   <div className="flex gap-2">
                     <button
-                      onClick={() =>
-                        router.push(`/universities/${university._id}`)
-                      }
+                      onClick={() => handleOpenEditModal(university)}
                       className="flex-1 px-3 py-2 text-sm bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 rounded-lg hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors flex items-center justify-center gap-1"
                     >
                       <Edit className="w-4 h-4" />
@@ -274,7 +307,7 @@ export default function UniversitiesPage() {
                     Add your first university to get started
                   </p>
                   <button
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={handleOpenCreateModal}
                     className="mt-4 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors inline-flex items-center gap-2"
                   >
                     <Plus className="w-4 h-4" />
@@ -286,23 +319,23 @@ export default function UniversitiesPage() {
           )}
         </div>
 
-        {/* Add University Modal */}
+        {/* Add/Edit University Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full">
-              <div className="border-b border-gray-200 dark:border-gray-700 p-6 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
+              <div className="border-b border-gray-200 dark:border-gray-700 p-4 sm:p-6 flex items-center justify-between">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
                   <Building2 className="w-5 h-5 text-primary" />
-                  Add New University
+                  {isEditMode ? "Edit University" : "Add New University"}
                 </h2>
                 <button
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={handleCloseModal}
                   className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
-              <form onSubmit={handleCreateUniversity} className="p-6">
+              <form onSubmit={handleSubmit} className="p-4 sm:p-6">
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -335,22 +368,26 @@ export default function UniversitiesPage() {
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-end gap-3 mt-6">
+                <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-6">
                   <button
                     type="button"
-                    onClick={() => setIsModalOpen(false)}
+                    onClick={handleCloseModal}
                     className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    disabled={createUniversity.isPending}
-                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-600 disabled:opacity-50 flex items-center gap-2"
+                    disabled={isPending}
+                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-600 disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     <Save className="w-4 h-4" />
-                    {createUniversity.isPending
-                      ? "Adding..."
+                    {isPending
+                      ? isEditMode
+                        ? "Updating..."
+                        : "Adding..."
+                      : isEditMode
+                      ? "Update University"
                       : "Add University"}
                   </button>
                 </div>

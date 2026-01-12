@@ -64,3 +64,17 @@ export function useDeleteStudent() {
     },
   });
 }
+
+export function useSearchStudents(query) {
+  return useQuery({
+    queryKey: ["students", "search", query],
+    queryFn: async () => {
+      const response = await api.get(
+        `/students/search?q=${encodeURIComponent(query)}`
+      );
+      return response.data;
+    },
+    enabled: query?.length >= 2,
+    staleTime: 1000 * 60, // 1 minute
+  });
+}

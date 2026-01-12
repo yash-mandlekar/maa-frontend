@@ -15,9 +15,10 @@ import {
   LogOut,
   ChevronDown,
   MessageCircle,
+  Menu,
 } from "lucide-react";
 
-export function Header() {
+export function Header({ onMenuClick }) {
   const router = useRouter();
   const { user } = useAuthStore();
   const { theme, toggleTheme } = useTheme();
@@ -47,9 +48,9 @@ export function Header() {
 
   if (!mounted) {
     return (
-      <header className="h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6">
+      <header className="h-14 lg:h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-4 lg:px-6">
         <div>
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+          <h2 className="text-lg lg:text-xl font-semibold text-gray-800 dark:text-gray-200">
             Welcome
           </h2>
         </div>
@@ -58,17 +59,27 @@ export function Header() {
   }
 
   return (
-    <header className="h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6">
-      <div>
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
-          Welcome, {user?.username}
-        </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          {user?.role || "Staff"}
-        </p>
+    <header className="h-14 lg:h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-4 lg:px-6">
+      <div className="flex items-center gap-3">
+        {/* Mobile menu button */}
+        <button
+          onClick={onMenuClick}
+          className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        >
+          <Menu className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+        </button>
+
+        <div>
+          <h2 className="text-base lg:text-xl font-semibold text-gray-800 dark:text-gray-200">
+            Welcome, {user?.username}
+          </h2>
+          <p className="text-xs lg:text-sm text-gray-600 dark:text-gray-400 hidden sm:block">
+            {user?.role || "Staff"}
+          </p>
+        </div>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 lg:gap-4">
         {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
@@ -90,19 +101,19 @@ export function Header() {
             onClick={() => setShowDropdown(!showDropdown)}
             className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           >
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold">
+            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-sm">
               {user?.username?.charAt(0).toUpperCase() || "U"}
             </div>
             <div className="hidden md:block text-left">
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 {user?.username || "User"}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[120px]">
                 {user?.email}
               </p>
             </div>
             <ChevronDown
-              className={`w-4 h-4 text-gray-500 transition-transform ${
+              className={`w-4 h-4 text-gray-500 transition-transform hidden md:block ${
                 showDropdown ? "rotate-180" : ""
               }`}
             />
@@ -115,7 +126,7 @@ export function Header() {
                 <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                   {user?.username}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                   {user?.email}
                 </p>
               </div>

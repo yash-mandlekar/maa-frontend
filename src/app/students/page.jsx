@@ -13,11 +13,15 @@ import { toast } from "sonner";
 export default function StudentsPage() {
   const [searchName, setSearchName] = useState("");
   const [searchContact, setSearchContact] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useStudents({
     name: searchName,
     contactNumber: searchContact,
+    startDate,
+    endDate,
     page,
     limit: 10,
   });
@@ -35,6 +39,14 @@ export default function StudentsPage() {
     }
   };
 
+  const handleClearFilters = () => {
+    setSearchName("");
+    setSearchContact("");
+    setStartDate("");
+    setEndDate("");
+    setPage(1);
+  };
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -46,22 +58,41 @@ export default function StudentsPage() {
 
         {/* Search and Add */}
         <Card>
-          <div className="flex flex-col md:flex-row gap-4 items-end">
-            <Input
-              label="Search by Name"
-              placeholder="Enter student name"
-              value={searchName}
-              onChange={(e) => setSearchName(e.target.value)}
-            />
-            <Input
-              label="Search by Contact"
-              placeholder="Enter contact number"
-              value={searchContact}
-              onChange={(e) => setSearchContact(e.target.value)}
-            />
-            <Link href="/students/new">
-              <Button>Add New Student</Button>
-            </Link>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col md:flex-row gap-4 items-end">
+              <Input
+                label="Search by Name"
+                placeholder="Enter student name"
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+              />
+              <Input
+                label="Search by Contact"
+                placeholder="Enter contact number"
+                value={searchContact}
+                onChange={(e) => setSearchContact(e.target.value)}
+              />
+              <Input
+                label="From Date"
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <Input
+                label="To Date"
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+            <div className="flex gap-2 items-center">
+              <Button variant="secondary" onClick={handleClearFilters}>
+                Clear Filters
+              </Button>
+              <Link href="/students/new">
+                <Button>Add New Student</Button>
+              </Link>
+            </div>
           </div>
         </Card>
 
@@ -81,14 +112,15 @@ export default function StudentsPage() {
                       <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                         Name
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
-                        Email
-                      </th>
+                     
                       <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                         Contact
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                         Course
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        Joining Date
                       </th>
                       <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                         Actions
@@ -108,14 +140,19 @@ export default function StudentsPage() {
                           <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
                             {student.firstName} {student.lastName}
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
-                            {student.email}
-                          </td>
+                         
                           <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                             {student.contactNumber}
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
-                            {student.course?.courseName || "N/A"}
+                            {student.course?.courseCode || "N/A"}
+                          </td>
+                          <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                            {student.joiningDate
+                              ? new Date(
+                                  student.joiningDate
+                                ).toLocaleDateString()
+                              : "N/A"}
                           </td>
                           <td className="px-4 py-3 text-sm">
                             <div className="flex gap-2">
@@ -141,7 +178,7 @@ export default function StudentsPage() {
                     ) : (
                       <tr>
                         <td
-                          colSpan="6"
+                          colSpan="7"
                           className="px-4 py-8 text-center text-gray-500"
                         >
                           No students found

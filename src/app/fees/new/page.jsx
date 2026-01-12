@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/Layout/DashboardLayout";
 import { Card } from "@/components/ui/Card";
-import { useStudents } from "@/hooks/api/useStudents";
-import { useAdmissions } from "@/hooks/api/useAdmissions";
+import { useSearchStudents } from "@/hooks/api/useStudents";
 import { useCreateFee } from "@/hooks/api/useFees";
 import {
   IndianRupee,
@@ -15,17 +14,24 @@ import {
   CreditCard,
   User,
   BookOpen,
+  Search,
 } from "lucide-react";
 import { toast } from "sonner";
 
 export default function NewFeePage() {
   const router = useRouter();
-  const { data: studentsData } = useStudents({ limit: 1000 });
-  const { data: admissionsData } = useAdmissions({ limit: 1000 });
   const createFee = useCreateFee();
+  const dropdownRef = useRef(null);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+
+  const { data: searchResults, isLoading: isSearching } =
+    useSearchStudents(searchQuery);
 
   const [formData, setFormData] = useState({
-    studentType: "student", // "student" or "admission"
+    studentType: "student",
     student: "",
     amount: "",
     paymentMode: "cash",
@@ -36,19 +42,37 @@ export default function NewFeePage() {
     status: "Paid",
   });
 
-  // Combine students and admissions for selection
-  const allStudents = [
-    ...(studentsData?.data?.map((s) => ({
-      ...s,
-      type: "student",
-      displayName: `${s.firstName} ${s.lastName} (Student)`,
-    })) || []),
-    ...(admissionsData?.data?.map((a) => ({
-      ...a,
-      type: "admission",
-      displayName: `${a.firstName} ${a.lastName} (Admission)`,
-    })) || []),
-  ];
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleStudentSelect = (student) => {
+    setSelectedStudent(student);
+    setFormData((prev) => ({
+      ...prev,
+      student: student._id,
+      studentType: student.type,
+    }));
+    setSearchQuery("");
+    setShowDropdown(false);
+  };
+
+  const clearSelectedStudent = () => {
+    setSelectedStudent(null);
+    setFormData((prev) => ({
+      ...prev,
+      student: "",
+      studentType: "student",
+    }));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,6 +84,11 @@ export default function NewFeePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.student) {
+      toast.error("Please select a student");
+      return;
+    }
 
     try {
       await createFee.mutateAsync({
@@ -107,25 +136,86 @@ export default function NewFeePage() {
               </h2>
             </div>
             <div className="grid grid-cols-1 gap-6">
-              <div>
+              <div ref={dropdownRef} className="relative">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Select Student <span className="text-red-500">*</span>
+                  Search Student <span className="text-red-500">*</span>
                 </label>
-                <select
-                  name="student"
-                  value={formData.student}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
-                >
-                  <option value="">Choose a student...</option>
-                  {allStudents.map((student) => (
-                    <option key={student._id} value={student._id}>
-                      {student.displayName} -{" "}
-                      {student.course?.courseName || "N/A"}
-                    </option>
-                  ))}
-                </select>
+
+                {selectedStudent ? (
+                  <div className="flex items-center justify-between p-3 bg-primary/10 border border-primary/30 rounded-lg">
+                    <div>
+                      <p className="font-medium text-gray-900 dark:text-gray-100">
+                        {selectedStudent.displayName}
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {selectedStudent.courseName} •{" "}
+                        {selectedStudent.type === "student"
+                          ? "Student"
+                          : "Admission"}{" "}
+                        • {selectedStudent.contactNumber}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={clearSelectedStudent}
+                      className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                    >
+                      <X className="w-5 h-5 text-gray-500" />
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value);
+                          setShowDropdown(true);
+                        }}
+                        onFocus={() => setShowDropdown(true)}
+                        placeholder="Search by name or contact number..."
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-gray-100"
+                      />
+                    </div>
+
+                    {/* Search Results Dropdown */}
+                    {showDropdown && searchQuery.length >= 2 && (
+                      <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-60 overflow-auto">
+                        {isSearching ? (
+                          <div className="p-3 text-center text-gray-500">
+                            Searching...
+                          </div>
+                        ) : searchResults?.data?.length > 0 ? (
+                          searchResults.data.map((student) => (
+                            <button
+                              key={student._id}
+                              type="button"
+                              onClick={() => handleStudentSelect(student)}
+                              className="w-full text-left px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                            >
+                              <p className="font-medium text-gray-900 dark:text-gray-100">
+                                {student.displayName}
+                              </p>
+                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {student.courseName} •{" "}
+                                {student.type === "student"
+                                  ? "Student"
+                                  : "Admission"}{" "}
+                                • {student.contactNumber}
+                              </p>
+                            </button>
+                          ))
+                        ) : (
+                          <div className="p-3 text-center text-gray-500">
+                            No students found
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </Card>

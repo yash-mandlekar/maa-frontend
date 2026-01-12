@@ -9,6 +9,8 @@ export function useAdmissions(params = {}) {
       if (params.name) queryParams.append("name", params.name);
       if (params.contactNumber)
         queryParams.append("contactNumber", params.contactNumber);
+      if (params.startDate) queryParams.append("startDate", params.startDate);
+      if (params.endDate) queryParams.append("endDate", params.endDate);
       if (params.page) queryParams.append("page", params.page);
       if (params.limit) queryParams.append("limit", params.limit);
 

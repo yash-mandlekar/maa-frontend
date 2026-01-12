@@ -117,12 +117,12 @@ function NewStudentPageContent() {
     <DashboardLayout>
       <div className="space-y-6">
         {/* Page Header */}
-        <div className="bg-primary rounded-lg p-6 text-white">
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <GraduationCap className="w-6 h-6" />
+        <div className="bg-primary rounded-lg p-4 sm:p-6 text-white">
+          <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+            <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6" />
             Student Registration Form
           </h1>
-          <p className="text-primary-100">
+          <p className="text-primary-100 text-sm sm:text-base">
             MAA Computers &gt; Students &gt; New Registration
           </p>
         </div>
@@ -133,7 +133,7 @@ function NewStudentPageContent() {
             <h2 className="text-lg font-semibold mb-4 text-gray-800">
               Basic Information
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Student Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -183,7 +183,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* Father/Husband Name */}
-              <div className="md:col-span-12">
+              <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Name of Father / Husband{" "}
                   <span className="text-red-500">*</span>
@@ -200,7 +200,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* Address */}
-              <div className="md:col-span-12">
+              <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Permanent Address <span className="text-red-500">*</span>
                 </label>
@@ -216,7 +216,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* Contact Number */}
-              <div className="md:col-span-6">
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Contact Number <span className="text-red-500">*</span>
                 </label>
@@ -232,7 +232,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* WhatsApp Number */}
-              <div className="md:col-span-6">
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   WhatsApp Number <span className="text-red-500">*</span>
                 </label>
@@ -248,7 +248,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* Qualification */}
-              <div className="md:col-span-6">
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Qualification <span className="text-red-500">*</span>
                 </label>
@@ -264,7 +264,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* Main Subject */}
-              <div className="md:col-span-2">
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Main Subject <span className="text-red-500">*</span>
                 </label>
@@ -280,7 +280,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* Enquiry Date */}
-              <div className="md:col-span-2">
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Enquiry Date <span className="text-red-500">*</span>
                 </label>
@@ -295,7 +295,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* Date of Birth */}
-              <div className="md:col-span-2">
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Date Of Birth <span className="text-red-500">*</span>
                 </label>
@@ -310,7 +310,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* Gender */}
-              <div className="md:col-span-12">
+              <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Gender <span className="text-red-500">*</span>
                 </label>
@@ -347,9 +347,9 @@ function NewStudentPageContent() {
             <h2 className="text-lg font-semibold mb-4 text-gray-800">
               Course & Academic Information
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Select Course */}
-              <div className="md:col-span-2">
+              <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Select Course <span className="text-red-500">*</span>
                 </label>
@@ -370,7 +370,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* Medium */}
-              <div className="md:col-span-2">
+              <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Medium <span className="text-red-500">*</span>
                 </label>
@@ -388,7 +388,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* Select University */}
-              <div className="md:col-span-2">
+              <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Select University <span className="text-red-500">*</span>
                 </label>
@@ -526,7 +526,7 @@ function NewStudentPageContent() {
             <h2 className="text-lg font-semibold mb-4 text-gray-800">
               Personal & Additional Information
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Category (Caste) */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -548,7 +548,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* UID Number */}
-              <div className="md:col-span-2">
+              <div className="sm:col-span-2 lg:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   UID Number (Aadhaar) <span className="text-red-500">*</span>
                 </label>
@@ -685,7 +685,7 @@ function NewStudentPageContent() {
             <h2 className="text-lg font-semibold mb-4 text-gray-800">
               Payment Information
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Registration Payment Mode */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -753,7 +753,7 @@ function NewStudentPageContent() {
               </div>
 
               {/* Due Amount Date */}
-              <div className="md:col-span-2">
+              <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Due Amount Date <span className="text-red-500">*</span>
                 </label>
@@ -772,11 +772,11 @@ function NewStudentPageContent() {
 
           {/* Action Buttons */}
           <Card>
-            <div className="flex justify-end gap-4">
+            <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
               <button
                 type="button"
                 onClick={() => router.push("/students")}
-                className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                className="px-4 sm:px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 order-2 sm:order-1"
               >
                 <X className="w-4 h-4" />
                 Cancel
@@ -784,7 +784,7 @@ function NewStudentPageContent() {
               <button
                 type="submit"
                 disabled={createStudent.isPending}
-                className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors flex items-center gap-2 disabled:opacity-50"
+                className="px-4 sm:px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-50 order-1 sm:order-2"
               >
                 <Save className="w-4 h-4" />
                 {createStudent.isPending

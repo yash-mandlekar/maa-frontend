@@ -14,11 +14,15 @@ import { GraduationCap } from "lucide-react";
 export default function AdmissionsPage() {
   const [searchName, setSearchName] = useState("");
   const [searchContact, setSearchContact] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useAdmissions({
     name: searchName,
     contactNumber: searchContact,
+    startDate,
+    endDate,
     page,
     limit: 10,
   });
@@ -36,6 +40,14 @@ export default function AdmissionsPage() {
     }
   };
 
+  const handleClearFilters = () => {
+    setSearchName("");
+    setSearchContact("");
+    setStartDate("");
+    setEndDate("");
+    setPage(1);
+  };
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -50,22 +62,41 @@ export default function AdmissionsPage() {
 
         {/* Search and Add */}
         <Card>
-          <div className="flex flex-col md:flex-row gap-4 items-end">
-            <Input
-              label="Search by Name"
-              placeholder="Enter student name"
-              value={searchName}
-              onChange={(e) => setSearchName(e.target.value)}
-            />
-            <Input
-              label="Search by Contact"
-              placeholder="Enter contact number"
-              value={searchContact}
-              onChange={(e) => setSearchContact(e.target.value)}
-            />
-            <Link href="/admission/new">
-              <Button>Add New Admission</Button>
-            </Link>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col md:flex-row gap-4 items-end">
+              <Input
+                label="Search by Name"
+                placeholder="Enter student name"
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+              />
+              <Input
+                label="Search by Contact"
+                placeholder="Enter contact number"
+                value={searchContact}
+                onChange={(e) => setSearchContact(e.target.value)}
+              />
+              <Input
+                label="From Date"
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <Input
+                label="To Date"
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+            <div className="flex gap-2 items-center">
+              <Button variant="secondary" onClick={handleClearFilters}>
+                Clear Filters
+              </Button>
+              <Link href="/admission/new">
+                <Button>Add New Admission</Button>
+              </Link>
+            </div>
           </div>
         </Card>
 
