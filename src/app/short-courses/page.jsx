@@ -152,7 +152,7 @@ export default function ShortTermCoursesPage() {
                 {courses?.length > 0
                   ? Math.round(
                       courses.reduce(
-                        (acc, c) => acc + (c.courseDuration || 0),
+                        (acc, c) => acc + (parseInt(c.courseDuration) || 0),
                         0
                       ) / courses.length
                     )

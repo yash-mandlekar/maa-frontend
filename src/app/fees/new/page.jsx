@@ -90,6 +90,12 @@ export default function NewFeePage() {
       return;
     }
 
+    const amount = Number(formData.amount);
+    if (!amount || amount <= 0) {
+      toast.error("Amount must be greater than 0");
+      return;
+    }
+
     try {
       await createFee.mutateAsync({
         student: formData.student,

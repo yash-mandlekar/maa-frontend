@@ -54,11 +54,11 @@ export function useSendInvoiceWhatsApp() {
   });
 }
 
-export function useOverdueStudents() {
+export function useOverdueStudents(params = {}) {
   return useQuery({
-    queryKey: ["students", "overdue"],
+    queryKey: ["students", "overdue", params],
     queryFn: async () => {
-      const response = await api.get("/students/overdue");
+      const response = await api.get("/students/overdue", { params });
       return response.data;
     },
   });

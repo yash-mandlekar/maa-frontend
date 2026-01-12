@@ -14,11 +14,15 @@ import {
 import { format } from "date-fns";
 import { toast } from "sonner";
 import Link from "next/link";
-import { X, Save, DollarSign } from "lucide-react";
+import { X, Save, DollarSign, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function FeesPage() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [overduePage, setOverduePage] = useState(1);
+  const [overdueLimit] = useState(5);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [paymentData, setPaymentData] = useState({
@@ -28,8 +32,11 @@ export default function FeesPage() {
     feeType: "Tuition Fee",
   });
 
-  const { data, isLoading } = useFees({ startDate, endDate });
-  const { data: overdueData, isLoading: overdueLoading } = useOverdueStudents();
+  const { data, isLoading } = useFees({ startDate, endDate, page, limit });
+  const { data: overdueData, isLoading: overdueLoading } = useOverdueStudents({
+    page: overduePage,
+    limit: overdueLimit,
+  });
   const downloadInvoice = useDownloadInvoice();
   const sendWhatsApp = useSendInvoiceWhatsApp();
   const createFee = useCreateFee();
@@ -77,6 +84,12 @@ export default function FeesPage() {
   const handlePaymentSubmit = async (e) => {
     e.preventDefault();
 
+    const amount = Number(paymentData.amount);
+    if (!amount || amount <= 0) {
+      toast.error("Amount must be greater than 0");
+      return;
+    }
+
     try {
       await createFee.mutateAsync({
         student: selectedStudent._id,
@@ -104,36 +117,6 @@ export default function FeesPage() {
             MAA Computers &gt; Fees
           </p>
         </div>
-
-        <Card>
-          <div className="flex flex-col md:flex-row gap-4 items-end">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Start Date
-              </label>
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-gray-100"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                End Date
-              </label>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-gray-100"
-              />
-            </div>
-            <Link href="/fees/new">
-              <Button>Add New Payment</Button>
-            </Link>
-          </div>
-        </Card>
 
         {/* Overdue Students Section */}
         <Card>
@@ -205,7 +188,8 @@ export default function FeesPage() {
                           </span>
                         </td>
                         <td className="px-4 py-3 text-sm">
-                          {student.course?.courseCode || student.course?.courseName ||
+                          {student.course?.courseCode ||
+                            student.course?.courseName ||
                             student.course?.shortCourseName ||
                             "N/A"}
                         </td>
@@ -257,9 +241,104 @@ export default function FeesPage() {
               </table>
             </div>
           )}
+
+          {/* Overdue Pagination */}
+          {overdueData?.pagination && overdueData.pagination.totalPages > 1 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-4 pt-4 border-t dark:border-gray-700">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Showing{" "}
+                {(overdueData.pagination.currentPage - 1) *
+                  overdueData.pagination.itemsPerPage +
+                  1}{" "}
+                to{" "}
+                {Math.min(
+                  overdueData.pagination.currentPage *
+                    overdueData.pagination.itemsPerPage,
+                  overdueData.pagination.totalItems
+                )}{" "}
+                of {overdueData.pagination.totalItems} overdue
+              </p>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setOverduePage((p) => Math.max(1, p - 1))}
+                  disabled={!overdueData.pagination.hasPrevPage}
+                  className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Page {overdueData.pagination.currentPage} of{" "}
+                  {overdueData.pagination.totalPages}
+                </span>
+                <button
+                  onClick={() =>
+                    setOverduePage((p) =>
+                      Math.min(overdueData.pagination.totalPages, p + 1)
+                    )
+                  }
+                  disabled={!overdueData.pagination.hasNextPage}
+                  className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
         </Card>
 
-        <Card title="Fee Records">
+        <Card>
+          {/* Fee Records Header with Filters */}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4 pb-4 border-b dark:border-gray-700">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              Fee Records
+            </h2>
+            <div className="flex flex-wrap items-end gap-3">
+              <div>
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  From Date
+                </label>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => {
+                    setStartDate(e.target.value);
+                    setPage(1);
+                  }}
+                  className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-gray-100"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  To Date
+                </label>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => {
+                    setEndDate(e.target.value);
+                    setPage(1);
+                  }}
+                  className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-gray-100"
+                />
+              </div>
+              {(startDate || endDate) && (
+                <button
+                  onClick={() => {
+                    setStartDate("");
+                    setEndDate("");
+                    setPage(1);
+                  }}
+                  className="px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                >
+                  Clear
+                </button>
+              )}
+              <Link href="/fees/new">
+                <Button className="text-sm py-1.5">+ Add Payment</Button>
+              </Link>
+            </div>
+          </div>
+
           {isLoading ? (
             <Spinner />
           ) : (
@@ -357,6 +436,75 @@ export default function FeesPage() {
                   )}
                 </tbody>
               </table>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {data?.pagination && data.pagination.totalPages > 1 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-4 pt-4 border-t dark:border-gray-700">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Showing{" "}
+                {(data.pagination.currentPage - 1) *
+                  data.pagination.itemsPerPage +
+                  1}{" "}
+                to{" "}
+                {Math.min(
+                  data.pagination.currentPage * data.pagination.itemsPerPage,
+                  data.pagination.totalItems
+                )}{" "}
+                of {data.pagination.totalItems} records
+              </p>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={!data.pagination.hasPrevPage}
+                  className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <div className="flex items-center gap-1">
+                  {Array.from(
+                    { length: Math.min(5, data.pagination.totalPages) },
+                    (_, i) => {
+                      let pageNum;
+                      if (data.pagination.totalPages <= 5) {
+                        pageNum = i + 1;
+                      } else if (data.pagination.currentPage <= 3) {
+                        pageNum = i + 1;
+                      } else if (
+                        data.pagination.currentPage >=
+                        data.pagination.totalPages - 2
+                      ) {
+                        pageNum = data.pagination.totalPages - 4 + i;
+                      } else {
+                        pageNum = data.pagination.currentPage - 2 + i;
+                      }
+                      return (
+                        <button
+                          key={pageNum}
+                          onClick={() => setPage(pageNum)}
+                          className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                            pageNum === data.pagination.currentPage
+                              ? "bg-primary text-white"
+                              : "border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                          }`}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    }
+                  )}
+                </div>
+                <button
+                  onClick={() =>
+                    setPage((p) => Math.min(data.pagination.totalPages, p + 1))
+                  }
+                  disabled={!data.pagination.hasNextPage}
+                  className="p-2 rounded-lg border border-gray-300 dark:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           )}
         </Card>
