@@ -1,5 +1,11 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
+
+const noopStorage = {
+  getItem: () => null,
+  setItem: () => {},
+  removeItem: () => {},
+};
 
 const useAuthStore = create(
   persist(
@@ -24,7 +30,9 @@ const useAuthStore = create(
     }),
     {
       name: "auth-storage",
-      getStorage: () => localStorage,
+      storage: createJSONStorage(() =>
+        typeof window !== "undefined" ? window.localStorage : noopStorage
+      ),
     }
   )
 );

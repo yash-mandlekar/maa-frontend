@@ -34,12 +34,15 @@ export const authService = {
   },
 
   logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
     useAuthStore.getState().logout();
   },
 
   getToken() {
+    if (typeof window === "undefined") return null;
     return localStorage.getItem("token");
   },
 
